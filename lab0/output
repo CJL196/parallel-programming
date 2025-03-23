@@ -1,0 +1,56 @@
+❯ make run
+Running 'make run' in 1/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/1”
+Running main.py...
+代码段执行时间为: 13.023760 秒
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/1”
+Running 'make run' in 2/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/2”
+g++ -c -Wall -o main.o main.cpp
+g++ -o main main.o
+./main
+代码段执行时间为: 0.730112 秒
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/2”
+Running 'make run' in 3/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/3”
+g++ -c -Wall -o main.o main.cpp
+g++ -o main main.o
+./main
+ijl: 0.748563s
+ilj: 0.585613s
+jil: 0.66516s
+jli: 0.844136s
+lij: 0.594558s
+lji: 0.825863s
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/3”
+Running 'make run' in 4/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/4”
+g++ -c -Wall -O3 -o main.o main.cpp
+g++ -o main main.o
+./main
+ijl: 0.162386s
+ilj: 0.0526998s
+jil: 0.153735s
+jli: 0.342971s
+lij: 0.0540779s
+lji: 0.321928s
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/4”
+Running 'make run' in 5/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/5”
+g++ -c -Wall -O3 -o main.o main.cpp
+g++ -o main main.o
+./main
+ijl: 0.165136s
+ilj: 0.0526975s
+jil: 0.151909s
+jli: 0.324586s
+lij: 0.0538486s
+lji: 0.313975s
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/5”
+Running 'make run' in 6/
+make[1]: 进入目录“/home/node1/Desktop/code/misc/multiprocess/lab0/6”
+g++ -c -Wall -O3 -I/opt/intel/oneapi/mkl/2025.0/include/ -o main.o main.cpp
+g++ -o main main.o -lpthread -lm -ldl -L/opt/intel/oneapi/mkl/2025.0/lib/ -lmkl_intel_lp64 -lmkl_core -lmkl_sequential
+./main
+MKL: 0.011409s
+make[1]: 离开目录“/home/node1/Desktop/code/misc/multiprocess/lab0/6”

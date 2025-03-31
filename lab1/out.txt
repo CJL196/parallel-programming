@@ -3,77 +3,77 @@ mpicc -Wall -O2 -c main.c -o main.o
 mpicc main.o -o main
 --------
  mpirun -np 1 ./main 128 128 128
-Matrix multiplication completed in 0.001423 seconds
+Matrix multiplication completed in 0.001584 seconds
 Verification passed!
  mpirun -np 1 ./main 256 256 256
-Matrix multiplication completed in 0.011210 seconds
+Matrix multiplication completed in 0.007655 seconds
 Verification passed!
  mpirun -np 1 ./main 512 512 512
-Matrix multiplication completed in 0.229659 seconds
+Matrix multiplication completed in 0.121906 seconds
 Verification passed!
  mpirun -np 1 ./main 1024 1024 1024
-Matrix multiplication completed in 3.640172 seconds
+Matrix multiplication completed in 2.256998 seconds
 Verification passed!
  mpirun -np 1 ./main 2048 2048 2048
-Matrix multiplication completed in 56.037415 seconds
+Matrix multiplication completed in 35.972930 seconds
 Verification passed!
  mpirun -np 2 ./main 128 128 128
-Matrix multiplication completed in 0.001661 seconds
+Matrix multiplication completed in 0.000664 seconds
 Verification passed!
  mpirun -np 2 ./main 256 256 256
-Matrix multiplication completed in 0.005928 seconds
+Matrix multiplication completed in 0.003727 seconds
 Verification passed!
  mpirun -np 2 ./main 512 512 512
-Matrix multiplication completed in 0.109735 seconds
+Matrix multiplication completed in 0.066178 seconds
 Verification passed!
  mpirun -np 2 ./main 1024 1024 1024
-Matrix multiplication completed in 1.802241 seconds
+Matrix multiplication completed in 1.033110 seconds
 Verification passed!
  mpirun -np 2 ./main 2048 2048 2048
-Matrix multiplication completed in 40.627967 seconds
+Matrix multiplication completed in 30.091869 seconds
 Verification passed!
  mpirun -np 4 ./main 128 128 128
-Matrix multiplication completed in 0.000710 seconds
+Matrix multiplication completed in 0.000989 seconds
 Verification passed!
  mpirun -np 4 ./main 256 256 256
-Matrix multiplication completed in 0.003166 seconds
+Matrix multiplication completed in 0.002453 seconds
 Verification passed!
  mpirun -np 4 ./main 512 512 512
-Matrix multiplication completed in 0.051324 seconds
+Matrix multiplication completed in 0.037623 seconds
 Verification passed!
  mpirun -np 4 ./main 1024 1024 1024
-Matrix multiplication completed in 0.966559 seconds
+Matrix multiplication completed in 0.628244 seconds
 Verification passed!
  mpirun -np 4 ./main 2048 2048 2048
-Matrix multiplication completed in 23.997994 seconds
+Matrix multiplication completed in 20.318650 seconds
 Verification passed!
  mpirun -np 8 ./main 128 128 128
-Matrix multiplication completed in 0.000459 seconds
+Matrix multiplication completed in 0.001754 seconds
 Verification passed!
  mpirun -np 8 ./main 256 256 256
-Matrix multiplication completed in 0.003260 seconds
+Matrix multiplication completed in 0.004588 seconds
 Verification passed!
  mpirun -np 8 ./main 512 512 512
-Matrix multiplication completed in 0.030293 seconds
+Matrix multiplication completed in 0.017855 seconds
 Verification passed!
  mpirun -np 8 ./main 1024 1024 1024
-Matrix multiplication completed in 0.562708 seconds
+Matrix multiplication completed in 0.422569 seconds
 Verification passed!
  mpirun -np 8 ./main 2048 2048 2048
-Matrix multiplication completed in 9.843191 seconds
+Matrix multiplication completed in 12.496992 seconds
 Verification passed!
  mpirun -np 16 ./main 128 128 128
-Matrix multiplication completed in 0.000953 seconds
+Matrix multiplication completed in 0.000625 seconds
 Verification passed!
  mpirun -np 16 ./main 256 256 256
-Matrix multiplication completed in 0.002910 seconds
+Matrix multiplication completed in 0.005932 seconds
 Verification passed!
  mpirun -np 16 ./main 512 512 512
-Matrix multiplication completed in 0.033072 seconds
+Matrix multiplication completed in 0.024070 seconds
 Verification passed!
  mpirun -np 16 ./main 1024 1024 1024
-Matrix multiplication completed in 0.407752 seconds
+Matrix multiplication completed in 0.349993 seconds
 Verification passed!
  mpirun -np 16 ./main 2048 2048 2048
-Matrix multiplication completed in 5.583048 seconds
+Matrix multiplication completed in 8.043890 seconds
 Verification passed!

@@ -1,91 +1,92 @@
-# Lab1: MPI Parallel Matrix Multiplication
+# Parallel Matrix Multiplication with MPI
 
-This project implements a parallel matrix multiplication algorithm using MPI (Message Passing Interface) point-to-point communication. It measures performance under varying process counts and matrix sizes, comparing parallel execution with a serial baseline for verification.
+This project implements a parallel matrix multiplication algorithm using MPI (Message Passing Interface) in C. It compares the performance of parallel computation against a serial implementation across various matrix sizes and process counts.
 
 ## Project Overview
 
-- **Purpose**: Implement and evaluate a parallel general matrix multiplication using MPI.
-- **Input**: Three integers $ m $, $ n $, $ k $ (matrix dimensions), each in the range [128, 2048].
-- **Problem**: Compute $ C = A \times B $, where $ A $ is an $ m \times n $ matrix and $ B $ is an $ n \times k $ matrix, both randomly generated.
-- **Output**: Matrices $ A $, $ B $, $ C $, and the computation time.
+- **Objective**: Accelerate matrix multiplication using MPI-based parallelism and verify correctness against a serial implementation.
 - **Features**:
-  - Parallel computation with MPI point-to-point communication.
-  - Serial implementation for result verification.
-  - Performance testing across different process counts (1-16) and matrix sizes (128-2048).
+  - Supports matrix sizes from 128x128 to 2048x2048.
+  - Distributes workload across multiple processes using row-based partitioning.
+  - Measures execution time and verifies results.
+- **Language**: C with MPI
+- **Tools**: MPICC, Python (for testing)
 
 ## Directory Structure
 
 ```
 lab1/
-├── main.c         # Main source code with MPI parallel matrix multiplication
-├── makefile       # Build and run script
-├── out.txt        # Performance test results
-└── test.py        # Script to automate testing with various configurations
+├── main         # Compiled executable
+├── main.c       # Source code for parallel and serial matrix multiplication
+├── makefile     # Makefile for building and running the project
+├── out.txt      # Output log from test runs
+└── test.py      # Python script to automate testing with varying process counts and matrix sizes
 ```
 
 ## Dependencies
 
-- **MPI**: An MPI implementation (e.g., OpenMPI or MPICH).
-- **C Compiler**: `mpicc` (MPI C compiler).
-- **Python**: For running the `test.py` script (optional).
+- **MPI**: Install an MPI implementation (e.g., OpenMPI or MPICH).
+  - Ubuntu: `sudo apt install libopenmpi-dev`
+  - CentOS: `sudo yum install openmpi-devel`
+- **GCC**: C compiler for building the project.
+- **Python 3**: For running the test script (`test.py`).
 
+## Usage
 
-## How to Build and Run
+1. **Build the Project**:
+   ```bash
+   make build
+   ```
+   This compiles `main.c` into the executable `main` using `mpicc`.
 
-### Build
-Compile the project using the provided `makefile`:
-```bash
-make build
+2. **Run Manually**:
+   ```bash
+   mpirun -np <num_processes> ./main <m> <n> <k>
+   ```
+   - `<num_processes>`: Number of MPI processes (e.g., 4).
+   - `<m> <n> <k>`: Matrix dimensions (e.g., 128 128 128 for \( A_{m \times n} \times B_{n \times k} \)).
+   - Constraints: Matrix sizes must be between 128 and 2048.
+
+3. **Run Automated Tests**:
+   ```bash
+   python test.py
+   ```
+   This script tests the program with process counts (1, 2, 4, 8, 16) and square matrix sizes (128, 256, 512, 1024, 2048), outputting results to the console.
+
+4. **Clean Up**:
+   ```bash
+   make clean
+   ```
+   Removes object files and the executable.
+
+## Sample Output
+
+From `out.txt`:
 ```
-This generates the executable `main`.
-
-### Run Manually
-Run the program with specific matrix dimensions and process count:
-```bash
-mpirun -np <num_processes> ./main <m> <n> <k>
-```
-Example:
-```bash
-mpirun -np 4 ./main 512 512 512
+mpirun -np 4 ./main 1024 1024 1024
+Matrix multiplication completed in 0.628244 seconds
+Verification passed!
 ```
 
-### Run Automated Tests
-Execute the `test.py` script to test all configurations (process counts: 1, 2, 4, 8, 16; matrix sizes: 128, 256, 512, 1024, 2048):
-```bash
-python test.py
-```
-Results will be printed to the console and saved in `out.txt`.
+## Performance Results
 
-### Clean Up
-Remove compiled files:
-```bash
-make clean
-```
+Execution times (in seconds) for different process counts and matrix sizes:
 
-## Core Implementation
+| Processes / Size | 128     | 256     | 512     | 1024    | 2048    |
+|------------------|---------|---------|---------|---------|---------|
+| 1                | 0.00158 | 0.00766 | 0.12191 | 2.25700 | 35.97293|
+| 2                | 0.00066 | 0.00373 | 0.06618 | 1.03311 | 30.09187|
+| 4                | 0.00099 | 0.00245 | 0.03762 | 0.62824 | 20.31865|
+| 8                | 0.00175 | 0.00459 | 0.01786 | 0.42257 | 12.49699|
+| 16               | 0.00063 | 0.00593 | 0.02407 | 0.34999 | 8.04389 |
 
-- **Parallelization**: The matrix $ A $ is divided by rows among processes. Each process computes a portion of $ C $ using local data, and results are gathered using `MPI_Gatherv`.
-- **Verification**: A serial matrix multiplication function verifies the parallel results.
-- **Timing**: Computation time is measured between `MPI_Barrier` calls to ensure synchronization.
-
-See `main.c` for detailed code.
-
-## Sample Results
-
-Performance (in seconds) from `out.txt`:
-
-| Processes / Size | 128    | 256    | 512    | 1024   | 2048   |
-|------------------|--------|--------|--------|--------|--------|
-| 1               | 0.0014 | 0.0112 | 0.2297 | 3.6402 | 56.0374|
-| 2               | 0.0017 | 0.0059 | 0.1097 | 1.8022 | 40.6280|
-| 4               | 0.0007 | 0.0032 | 0.0513 | 0.9666 | 23.9980|
-| 8               | 0.0005 | 0.0033 | 0.0303 | 0.5627 | 9.8432 |
-| 16              | 0.0010 | 0.0029 | 0.0331 | 0.4078 | 5.5830 |
-
-- **Observation**: Time decreases with more processes, especially for larger matrices, though communication overhead can dominate for small sizes.
+- **Observation**: Speedup is significant for larger matrices (e.g., 2048x2048), with execution time dropping from 35.97s (1 process) to 8.04s (16 processes). Smaller matrices show less benefit due to communication overhead.
 
 ## Notes
 
-- Ensure matrix dimensions are within [128, 2048], or the program will abort with an error.
-- Results are verified against a serial implementation to ensure correctness.
-- For detailed analysis and optimization suggestions, refer to the associated lab report.
+- The program uses point-to-point communication (`MPI_Send` and `MPI_Recv`) for data distribution and result collection, which may limit scalability for very high process counts.
+- Verification is performed by comparing parallel results against a serial computation, with a tolerance of \( 1 \times 10^{-10} \) for floating-point errors.
+
+## License
+
+This project is for educational purposes and has no specific license.

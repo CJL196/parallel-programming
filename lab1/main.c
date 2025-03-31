@@ -33,7 +33,6 @@ int verify_results(double *C_parallel, double *C_serial, int m, int k) {
 }
 int main(int argc, char *argv[])
 {
-
     int rank, size, m, n, k;
     double *A, *B, *C, *C_serial;
     double start_time, end_time;
@@ -62,12 +61,19 @@ int main(int argc, char *argv[])
             MPI_Abort(MPI_COMM_WORLD, 1);
         }
     }
-    MPI_Bcast(&m, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&k, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    // printf("Process %d of %d\n", rank, size);
-    // printf("m=%d, n=%d, k=%d\n", m, n, k);
+    // 使用点对点通信广播矩阵维度
+    if (rank == 0) {
+        for (int i = 1; i < size; i++) {
+            MPI_Send(&m, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+            MPI_Send(&n, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
+            MPI_Send(&k, 1, MPI_INT, i, 2, MPI_COMM_WORLD);
+        }
+    } else {
+        MPI_Recv(&m, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&n, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(&k, 1, MPI_INT, 0, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
 
     // 分配内存
     A = (double *)malloc(m * n * sizeof(double));
@@ -87,9 +93,16 @@ int main(int argc, char *argv[])
     for (int i = 0; i < m * k; i++)
         C[i] = 0.0;
 
-    // 广播矩阵A和B
-    MPI_Bcast(A, m * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast(B, n * k, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    // 使用点对点通信广播矩阵A和B
+    if (rank == 0) {
+        for (int i = 1; i < size; i++) {
+            MPI_Send(A, m * n, MPI_DOUBLE, i, 3, MPI_COMM_WORLD);
+            MPI_Send(B, n * k, MPI_DOUBLE, i, 4, MPI_COMM_WORLD);
+        }
+    } else {
+        MPI_Recv(A, m * n, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(B, n * k, MPI_DOUBLE, 0, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
 
     // 计算每个进程处理的行数
     int rows_per_process = m / size;
@@ -112,27 +125,19 @@ int main(int argc, char *argv[])
         }
     }
 
-    // 收集所有进程的计算结果
+    // 使用点对点通信收集结果
     if (rank == 0) {
-        // 进程0先复制自己的结果
-        int *recvcounts = (int *)malloc(size * sizeof(int));
-        int *displs = (int *)malloc(size * sizeof(int));
-        
-        for (int i = 0; i < size; i++) {
-            recvcounts[i] = (m / size + (i < m % size ? 1 : 0)) * k;
-            displs[i] = (i * (m / size) + (i < m % size ? i : m % size)) * k;
+        // 进程0接收其他进程的结果
+        for (int i = 1; i < size; i++) {
+            int other_start_row = i * (m / size) + (i < m % size ? i : m % size);
+            int other_rows = m / size + (i < m % size ? 1 : 0);
+            MPI_Recv(&C[other_start_row * k], other_rows * k, MPI_DOUBLE, 
+                    i, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
-        
-        MPI_Gatherv(MPI_IN_PLACE, rows_per_process * k, MPI_DOUBLE,
-                   C, recvcounts, displs, MPI_DOUBLE,
-                   0, MPI_COMM_WORLD);
-        
-        free(recvcounts);
-        free(displs);
     } else {
-        MPI_Gatherv(&C[start_row * k], rows_per_process * k, MPI_DOUBLE,
-                   NULL, NULL, NULL, MPI_DOUBLE,
-                   0, MPI_COMM_WORLD);
+        // 其他进程发送结果给进程0
+        MPI_Send(&C[start_row * k], rows_per_process * k, MPI_DOUBLE, 
+                0, 5, MPI_COMM_WORLD);
     }
 
     // 记录结束时间

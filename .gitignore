@@ -1,1 +1,4 @@
 .vscode
+main
+*.o
+digest.txt

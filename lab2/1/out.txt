@@ -1,0 +1,75 @@
+ mpirun -np 1 ./main 128 128 128
+Matrix multiplication completed in 0.001356 seconds
+Verification passed!
+ mpirun -np 1 ./main 256 256 256
+Matrix multiplication completed in 0.011183 seconds
+Verification passed!
+ mpirun -np 1 ./main 512 512 512
+Matrix multiplication completed in 0.197503 seconds
+Verification passed!
+ mpirun -np 1 ./main 1024 1024 1024
+Matrix multiplication completed in 3.667184 seconds
+Verification passed!
+ mpirun -np 1 ./main 2048 2048 2048
+Matrix multiplication completed in 33.947382 seconds
+Verification passed!
+ mpirun -np 2 ./main 128 128 128
+Matrix multiplication completed in 0.001429 seconds
+Verification passed!
+ mpirun -np 2 ./main 256 256 256
+Matrix multiplication completed in 0.006817 seconds
+Verification passed!
+ mpirun -np 2 ./main 512 512 512
+Matrix multiplication completed in 0.097709 seconds
+Verification passed!
+ mpirun -np 2 ./main 1024 1024 1024
+Matrix multiplication completed in 1.698988 seconds
+Verification passed!
+ mpirun -np 2 ./main 2048 2048 2048
+Matrix multiplication completed in 24.795434 seconds
+Verification passed!
+ mpirun -np 4 ./main 128 128 128
+Matrix multiplication completed in 0.002258 seconds
+Verification passed!
+ mpirun -np 4 ./main 256 256 256
+Matrix multiplication completed in 0.004576 seconds
+Verification passed!
+ mpirun -np 4 ./main 512 512 512
+Matrix multiplication completed in 0.060210 seconds
+Verification passed!
+ mpirun -np 4 ./main 1024 1024 1024
+Matrix multiplication completed in 0.984938 seconds
+Verification passed!
+ mpirun -np 4 ./main 2048 2048 2048
+Matrix multiplication completed in 18.738457 seconds
+Verification passed!
+ mpirun -np 8 ./main 128 128 128
+Matrix multiplication completed in 0.002749 seconds
+Verification passed!
+ mpirun -np 8 ./main 256 256 256
+Matrix multiplication completed in 0.004651 seconds
+Verification passed!
+ mpirun -np 8 ./main 512 512 512
+Matrix multiplication completed in 0.042803 seconds
+Verification passed!
+ mpirun -np 8 ./main 1024 1024 1024
+Matrix multiplication completed in 0.596411 seconds
+Verification passed!
+ mpirun -np 8 ./main 2048 2048 2048
+Matrix multiplication completed in 8.059643 seconds
+Verification passed!
+ mpirun -np 16 ./main 128 128 128
+Matrix multiplication completed in 0.002857 seconds
+Verification passed!
+ mpirun -np 16 ./main 256 256 256
+Matrix multiplication completed in 0.005514 seconds
+Verification passed!
+ mpirun -np 16 ./main 512 512 512
+Matrix multiplication completed in 0.038118 seconds
+Verification passed!
+ mpirun -np 16 ./main 1024 1024 1024
+Matrix multiplication completed in 0.359602 seconds
+Verification passed!
+ mpirun -np 16 ./main 2048 2048 2048
+Matrix multiplication completed in 5.364627 seconds
+Verification passed!

@@ -1,0 +1,5 @@
+make run
+g++ -Wall -O2 -std=c++11 -pthread -o quadratic_equation main.cpp
+./quadratic_equation 100 200 100
+方程的解: x1 = -1, x2 = -1
+计算耗时: 87 微秒

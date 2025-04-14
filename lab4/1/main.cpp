@@ -47,8 +47,8 @@ void* calculateSqrt(void* arg) {
     return nullptr;
 }
 
-// 计算根的线程函数
-void* calculateRoots(void* arg) {
+// 计算第一个根的线程函数
+void* calculateFirstRoot(void* arg) {
     ThreadData* data = (ThreadData*)arg;
     
     pthread_mutex_lock(&data->mutex);
@@ -56,6 +56,19 @@ void* calculateRoots(void* arg) {
         pthread_cond_wait(&data->cond_sqrt, &data->mutex);
     }
     data->x1 = (-data->b + data->sqrt_discriminant) / (2 * data->a);
+    pthread_mutex_unlock(&data->mutex);
+    
+    return nullptr;
+}
+
+// 计算第二个根的线程函数
+void* calculateSecondRoot(void* arg) {
+    ThreadData* data = (ThreadData*)arg;
+    
+    pthread_mutex_lock(&data->mutex);
+    while (!data->sqrt_ready) {
+        pthread_cond_wait(&data->cond_sqrt, &data->mutex);
+    }
     data->x2 = (-data->b - data->sqrt_discriminant) / (2 * data->a);
     pthread_mutex_unlock(&data->mutex);
     
@@ -85,13 +98,14 @@ int main(int argc, char* argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
     
     // 创建线程
-    pthread_t threads[3];
+    pthread_t threads[4];
     pthread_create(&threads[0], nullptr, calculateDiscriminant, &data);
     pthread_create(&threads[1], nullptr, calculateSqrt, &data);
-    pthread_create(&threads[2], nullptr, calculateRoots, &data);
+    pthread_create(&threads[2], nullptr, calculateFirstRoot, &data);
+    pthread_create(&threads[3], nullptr, calculateSecondRoot, &data);
     
     // 等待所有线程完成
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         pthread_join(threads[i], nullptr);
     }
     
@@ -102,6 +116,26 @@ int main(int argc, char* argv[]) {
     // 输出结果
     std::cout << "方程的解: x1 = " << data.x1 << ", x2 = " << data.x2 << std::endl;
     std::cout << "计算耗时: " << duration.count() << " 微秒" << std::endl;
+    
+    // 串行计算
+    auto serial_start = std::chrono::high_resolution_clock::now();
+    
+    // 串行方式计算方程
+    double discriminant_serial = data.b * data.b - 4 * data.a * data.c;
+    double sqrt_discriminant_serial = sqrt(discriminant_serial);
+    double x1_serial = (-data.b + sqrt_discriminant_serial) / (2 * data.a);
+    double x2_serial = (-data.b - sqrt_discriminant_serial) / (2 * data.a);
+    
+    auto serial_end = std::chrono::high_resolution_clock::now();
+    auto serial_duration = std::chrono::duration_cast<std::chrono::microseconds>(serial_end - serial_start);
+    
+    // 输出串行计算结果
+    std::cout << "串行计算的解: x1 = " << x1_serial << ", x2 = " << x2_serial << std::endl;
+    std::cout << "串行计算耗时: " << serial_duration.count() << " 微秒" << std::endl;
+    
+    // 计算加速比
+    double speedup = static_cast<double>(serial_duration.count()) / duration.count();
+    std::cout << "加速比: " << speedup << std::endl;
     
     // 清理资源
     pthread_mutex_destroy(&data.mutex);

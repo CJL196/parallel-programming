@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 199309L
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
@@ -165,7 +166,9 @@ int main ( int argc, char *argv[] )
   /*
     迭代直到新解 W 与旧解 U 之间的差异小于 EPSILON
   */
-  clock_t start_time = clock();
+  // 计时变量声明
+  struct timespec start_time, end_time;
+  clock_gettime(CLOCK_MONOTONIC, &start_time);
   iterations = 0;
   iterations_print = 1;
   printf("\n");
@@ -192,8 +195,9 @@ int main ( int argc, char *argv[] )
     }
   }
   
-  clock_t end_time = clock();
-  double elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+  clock_gettime(CLOCK_MONOTONIC, &end_time);
+  double elapsed_time = (end_time.tv_sec - start_time.tv_sec) +
+                        (end_time.tv_nsec - start_time.tv_nsec) / 1e9;
 
   printf("\n");
   printf("  %8d  %f\n", iterations, data.diff);

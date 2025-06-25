@@ -1,0 +1,1 @@
+add_executable(im2col_gemm_conv im2col_gemm_conv.cu)

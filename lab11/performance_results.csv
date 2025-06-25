@@ -1,0 +1,31 @@
+task_name,size,stride,time
+Task 1: Direct Conv,256,1,0.05792
+Task 2: im2col+GEMM,256,1,0.563616
+Task 3: cuDNN,256,1,0.029472
+Task 1: Direct Conv,512,1,0.164192
+Task 2: im2col+GEMM,512,1,2.08282
+Task 3: cuDNN,512,1,0.084864
+Task 1: Direct Conv,1024,1,0.56832
+Task 2: im2col+GEMM,1024,1,8.2985
+Task 3: cuDNN,1024,1,0.312992
+Task 1: Direct Conv,2048,1,2.23846
+Task 2: im2col+GEMM,2048,1,33.1008
+Task 3: cuDNN,2048,1,1.37741
+Task 1: Direct Conv,512,2,0.050304
+Task 2: im2col+GEMM,512,2,1.8976
+Task 3: cuDNN,512,2,0.064992
+Task 1: Direct Conv,1024,2,0.156352
+Task 2: im2col+GEMM,1024,2,7.61651
+Task 3: cuDNN,1024,2,0.222208
+Task 1: Direct Conv,2048,2,0.545888
+Task 2: im2col+GEMM,2048,2,30.9098
+Task 3: cuDNN,2048,2,1.1407
+Task 1: Direct Conv,512,3,0.032544
+Task 2: im2col+GEMM,512,3,1.90026
+Task 3: cuDNN,512,3,0.06144
+Task 1: Direct Conv,1024,3,0.079872
+Task 2: im2col+GEMM,1024,3,8.18342
+Task 3: cuDNN,1024,3,0.218112
+Task 1: Direct Conv,2048,3,0.362496
+Task 2: im2col+GEMM,2048,3,32.6554
+Task 3: cuDNN,2048,3,1.22288
